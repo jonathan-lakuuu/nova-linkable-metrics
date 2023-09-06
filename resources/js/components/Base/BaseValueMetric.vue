@@ -10,7 +10,7 @@
           class="ml-auto w-[6rem] flex-shrink-0"
           size="xxs"
           :options="ranges"
-          v-model:selected="selectedRangeKey"
+          :selected="selectedRangeKey"
           @change="handleChange"
           :aria-label="__('Select Ranges')"
         />
@@ -158,6 +158,17 @@
         }
       },
 
+      utilIncreaseOrDecrease(currentValue, startingValue) {
+        if (startingValue === 0) {
+          return null
+        }
+
+        if (currentValue > startingValue) {
+          return ((currentValue - startingValue) / Math.abs(startingValue)) * 100
+        } else {
+          return ((startingValue - currentValue) / Math.abs(startingValue)) * -100
+        }
+      },
     },
 
     computed: {
@@ -170,7 +181,7 @@
         if (this.previous == 0 || this.previous == null || this.value == 0)
           return 0
 
-        return increaseOrDecrease(this.value, this.previous).toFixed(2)
+        return this.utilIncreaseOrDecrease(this.value, this.previous).toFixed(2)
       },
 
       increaseOrDecreaseLabel() {
